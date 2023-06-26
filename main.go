@@ -10,6 +10,10 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
+type PostSerializer struct{
+
+}
+
 var ussd ussdbuilder.UssdMenu
 
 func main() {
@@ -36,6 +40,9 @@ func register(ctx *fiber.Ctx) error {
 		2: "Build Home",
 	})
 	fmt.Printf("URL.Body = %q\n", res)
+		fmt.Printf("URL.Body = %q\n", ctx.Body())
+	ris := ussd.GoToState(2)
+	fmt.Printf("URL.Body = %q\n", ris)
 	return ctx.SendString(ussd.CON("HELLO WORLD \n 1. Build Home"))
 }
 
