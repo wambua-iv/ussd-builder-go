@@ -1,41 +1,51 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	//"net/http"
 	ussdbuilder "ussd-builder/ussd-builder"
-    "github.com/gofiber/fiber/v2"
+
+	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 var ussd ussdbuilder.UssdMenu
 
 func main() {
-    ussdBuilder := fiber.New()
+	ussdBuilder := fiber.New()
 	ussdBuilder.Use(cors.New(cors.Config{
 		AllowOrigins: "*",
 		AllowHeaders: "Origin, Content-Type, Accept",
 	}))
 
-    ussdBuilder.Get("init", initialize)
-    ussdBuilder.Post("ussd", register)
+	ussdBuilder.Get("init", initialize)
+	ussdBuilder.Post("ussd", register)
 
-    log.Fatal(ussdBuilder.Listen(":3080"))
+	log.Fatal(ussdBuilder.Listen(":3080"))
 
 }
 
 func initialize(ctx *fiber.Ctx) error {
-    return ctx.SendString(ussd.CON("Hello World"))
+	return ctx.SendString(ussd.CON("Hello World"))
 }
 
 func register(ctx *fiber.Ctx) error {
-    return ctx.SendString(ussd.CON("Hello World"))}
+	res := ussd.BuildState(map[int]string{
+		1: "here",
+		2: "Build Home",
+	})
+	fmt.Printf("URL.Body = %q\n", res)
+	return ctx.SendString(ussd.CON("HELLO WORLD \n 1. Build Home"))
+}
+
 // handler echoes the Path component of the requested URL.
 // func handler(w http.ResponseWriter, r *http.Request) string {
 
 //     server := http.NewServeMux()
 //     server.HandleFunc("/", handler) // each request calls handler
 //     log.Fatal(http.ListenAndServe(":8000", nil))
-    
+
 //     body, _ := ioutil.ReadAll(r.Body)
 //     fmt.Fprintf(w, "URL.Path = %q\n", r.URL.Path)
 //     fmt.Fprintf(w, "URL.Body = %q\n", body)

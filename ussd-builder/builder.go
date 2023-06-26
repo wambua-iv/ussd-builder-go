@@ -37,14 +37,12 @@ func (ussd *UssdMenu) END(text string) string {
 	return ussd.result
 }
 
-func (ussd *UssdMenu) BuildState(text string, option func() string) {}
+//func (ussd *UssdMenu) BuildState(text string, next mapping, a ...value) {}
 
-func (ussd *UssdMenu) StartState(next mapping, a ...value) string {
-	ussd.states[1] = "Start State"
-	for key, value := range next {
-		ussd.states[key] = value
-	}
-	return ussd.states[1]
+func (ussd *UssdMenu) BuildState(next mapping, a ...value) mapping {
+	ussd.states =next
+
+	return ussd.states
 }
 
 func (ussd *UssdMenu) GoToState(state int) string {
