@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
+
 	//"net/http"
 	ussdbuilder "ussd-builder/ussd-builder"
 
@@ -47,10 +49,12 @@ func register(ctx *fiber.Ctx) error {
 	
 	fmt.Printf("URL.Body = %q\n", res)
 		fmt.Printf("URL.Body = %q\n", ctx.Body())
-	ris := ussd.GoToState(2)
+	//ris := ussd.GoToState(2)
+
+	rip := json.Unmarshal(ctx.Body(), &body)
 
 	ctx.BodyParser(&body)
-	fmt.Printf("URL.Body = %q\n", ris)
+	fmt.Printf("URL.Body = %q\n", rip)
 	fmt.Printf("URL.Body = %q\n", body)
 	fmt.Printf("URL.Path = %q\n", ussd.GetRoutes("1*2*4*5*6"))
 	fmt.Printf("URL.Path = %q\n", ussd.GetCurrentRoute("1*2*4*5*7"))
