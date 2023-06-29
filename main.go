@@ -55,7 +55,7 @@ func register(ctx *fiber.Ctx) error {
 
 	ctx.BodyParser(&body)
 	fmt.Printf("URL.Body = %q\n", rip)
-	fmt.Printf("URL.Body = %q\n", body)
+	fmt.Printf("URL.Body = %q\n", body.PhoneNumber)
 	fmt.Printf("URL.Path = %q\n", ussd.GetRoutes("1*2*4*5*6"))
 	fmt.Printf("URL.Path = %q\n", ussd.GetCurrentRoute("1*2*4*5*7"))
 	return ctx.SendString(ussd.CON("HELLO WORLD \n 1. Build Home"))
