@@ -11,26 +11,27 @@ type option interface {
 	run() string
 }
 
-type args struct {
-	sessionID   string
-	phoneNumber string
-	serviceCode string
-	text        string
+type Args struct {
+	SessionID   string
+	PhoneNumber string
+	ServiceCode string
+	Text        string
+	NetworkCode string
 }
 
 type mapping map[int]string
 
 type UssdMenu struct {
 	session string
-	args
+	Args
 	states     mapping
 	result     string
 	routeParts []string
 }
 
 func (ussd *UssdMenu) CON(text string) string {
-	ussd.text = "CON " + text
-	return ussd.text
+	ussd.Text = "CON " + text
+	return ussd.Text
 }
 
 func (ussd *UssdMenu) END(text string) string {
@@ -60,11 +61,11 @@ func (ussd *UssdMenu) GetRoutes(route string) []string {
 	return ussd.routeParts
 }
 
-func (ussd *UssdMenu) GetCurrentRoute(route string) string{
+func (ussd *UssdMenu) GetCurrentRoute(route string) string {
 	chars := "*"
-	routes:= strings.ReplaceAll(route, chars, "")
+	routes := strings.ReplaceAll(route, chars, "")
 	for key := range routes {
-		if string(routes[key]) != ussd.routeParts[key]{
+		if string(routes[key]) != ussd.routeParts[key] {
 			return string(routes[key])
 		}
 	}
