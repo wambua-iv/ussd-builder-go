@@ -11,10 +11,11 @@ import (
 )
 
 type PostSerializer struct{
-	sessionID   string
-	phoneNumber string
-	serviceCode string
-	text        string
+	SessionID   string `xml:"sessionId"`
+	PhoneNumber string `xml:"phoneNumber" `
+	ServiceCode string `xml:"serviceCode"`
+	Text        string `xml:"text"`
+	NetworkCode string `xml:"networkCode"`
 }
 
 var ussd ussdbuilder.UssdMenu
