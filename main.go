@@ -11,7 +11,10 @@ import (
 )
 
 type PostSerializer struct{
-
+	sessionID   string
+	phoneNumber string
+	serviceCode string
+	text        string
 }
 
 var ussd ussdbuilder.UssdMenu
@@ -35,14 +38,21 @@ func initialize(ctx *fiber.Ctx) error {
 }
 
 func register(ctx *fiber.Ctx) error {
+	var body PostSerializer
 	res := ussd.BuildState(map[int]string{
 		1: "here",
 		2: "Build Home",
 	})
+	
 	fmt.Printf("URL.Body = %q\n", res)
 		fmt.Printf("URL.Body = %q\n", ctx.Body())
 	ris := ussd.GoToState(2)
+
+	ctx.BodyParser(&body)
 	fmt.Printf("URL.Body = %q\n", ris)
+	fmt.Printf("URL.Body = %q\n", body)
+	fmt.Printf("URL.Path = %q\n", ussd.GetRoutes("1*2*4*5*6"))
+	fmt.Printf("URL.Path = %q\n", ussd.GetCurrentRoute("1*2*4*5*7"))
 	return ctx.SendString(ussd.CON("HELLO WORLD \n 1. Build Home"))
 }
 
