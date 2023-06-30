@@ -21,10 +21,21 @@ type Args struct {
 
 type mapping map[int]string
 
+type State struct {
+	Name string
+	Run  func() string
+}
+
+type States map[string] State
+
+func (s *State) GetName() string {
+	return s.Name
+}
+
 type UssdMenu struct {
 	session string
 	Args
-	states     mapping
+	States     mapping
 	result     string
 	routeParts []string
 }
@@ -41,14 +52,16 @@ func (ussd *UssdMenu) END(text string) string {
 
 //func (ussd *UssdMenu) BuildState(text string, next mapping, a ...value) {}
 
-func (ussd *UssdMenu) BuildState(next mapping, a ...value) mapping {
-	ussd.states = next
+func (ussd *UssdMenu) BuildState(states mapping, a ...value) mapping {
+	ussd.States = states
 
-	return ussd.states
+	return ussd.States
 }
 
+
+
 func (ussd *UssdMenu) GoToState(state int) string {
-	return ussd.states[state]
+	return ussd.States[state]
 }
 
 func (ussd *UssdMenu) GetRoutes(route string) []string {
@@ -73,6 +86,8 @@ func (ussd *UssdMenu) GetCurrentRoute(route string) string {
 }
 
 func (ussd *UssdMenu) GetValue() {}
+
+func (UssdMenu) Run(run func(any ...interface{}) string) string { return run() }
 
 // func main() {
 // 	var sess UssdMenu

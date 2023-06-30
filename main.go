@@ -12,6 +12,7 @@ import (
 )
 
 var ussd ussdbuilder.UssdMenu
+var states ussdbuilder.States
 
 func main() {
 	ussdBuilder := fiber.New()
@@ -33,11 +34,20 @@ func initialize(ctx *fiber.Ctx) error {
 
 func register(ctx *fiber.Ctx) error {
 	ctx.BodyParser(&ussd.Args)
+	
+	
 
-	res := ussd.BuildState(map[int]string{
-		1: "here",
-		2: "Build Home",
+	&states = map [string] ussdbuilder.State {
+		"register": { 
+			Name: "register", 
+			Run: func() string { return ussd.CON("Hey homie")},
+		},
+	}
+
+	res := ussd.BuildState(map[int]string {
+		1: "regist",
 	})
+
 
 	fmt.Printf("URL.Body = %q\n", res)
 	fmt.Printf("URL.Body = %q\n", ctx.Body())
