@@ -5,11 +5,20 @@ import (
 	"strings"
 )
 
-type value interface{}
+// define the methods to be implemented by the State
 
-type option interface {
-	run() string
+type StateImpl interface {
+	run () string
+	next () string
 }
+
+type State struct {
+	Name string
+}
+
+var States map[string] State
+
+
 
 type Args struct {
 	SessionID   string
@@ -19,14 +28,9 @@ type Args struct {
 	NetworkCode string
 }
 
-type mapping map[int]string
 
-type State struct {
-	Name string
-	Run  func() string
-}
 
-type States map[string] State
+
 
 func (s *State) GetName() string {
 	return s.Name
@@ -34,7 +38,7 @@ func (s *State) GetName() string {
 
 type UssdMenu struct {
 	session string
-	Args
+	Args 		Args
 	States     mapping
 	result     string
 	routeParts []string
